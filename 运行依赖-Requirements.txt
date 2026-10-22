@@ -1,0 +1,2 @@
+# Only needed for URL downloads. SRT conversion has no external dependencies.
+yt-dlp>=2024.10.22
