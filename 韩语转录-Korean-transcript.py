@@ -102,7 +102,8 @@ def export_captions(cues, directory):
 def tool_path(name, explicit=None):
     candidate = explicit or shutil.which(name)
     if not candidate or not Path(candidate).is_file():
-        raise TranscriptError(f"Missing {name}; install it or supply --{name}")
+        option = "whisper" if name == "whisper-cli" else name
+        raise TranscriptError(f"Missing {name}; install it or supply --{option}")
     return str(Path(candidate).resolve())
 
 

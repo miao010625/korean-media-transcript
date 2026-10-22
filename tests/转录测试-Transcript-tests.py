@@ -166,6 +166,33 @@ class TranscriptTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertNotIn("sample-password", result.stderr + result.stdout)
 
+    def test_missing_whisper_error_names_the_supported_option(self):
+        media = self.root / "sample.wav"
+        media.write_bytes(b"fixture")
+        result = subprocess.run(
+            [
+                sys.executable,
+                "-X",
+                "utf8",
+                str(SCRIPT),
+                str(media),
+                "--out",
+                str(self.output),
+                "--ffmpeg",
+                sys.executable,
+                "--ffprobe",
+                sys.executable,
+                "--whisper",
+                str(self.root / "missing"),
+            ],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+        )
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("supply --whisper", result.stderr)
+        self.assertNotIn("--whisper-cli", result.stderr)
+
 
 if __name__ == "__main__":
     unittest.main()
